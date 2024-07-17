@@ -26,15 +26,26 @@ function numToExp(num)   //把数字转成科学计数法(返回object)
 }
 function expToStr(value)    //把科学计数法的数字转为string
 {
+    if(typeof(value.exp)==="object"){
+        if(value.exp.exp.exp.exp){
+            var expe;
+            while(value.exp.exp){
+                value = value.exp;
+                expe++;
+            }
+            return "e^" + expe + " " + expToStr(value);
+        }
+        return "e" + expToStr(value);
+    }
     if(value.exp >= 1e5)
     {
-        return ( (value.bas).toFixed(4) ) + 'e(' + ( value.exp > 0 ? '+' : '' ) + expToStr( numToExp(value.exp) ) + ')';
+        return ( (value.bas).toFixed(4) ) + 'e' + expToStr( numToExp(value.exp) );
     }
     if(value.exp < 5)
     {
         return (value.bas * Math.pow(10, value.exp)).toFixed(4 - value.exp);
     }
-    return '' + ( (value.bas).toFixed(4) ) + 'e' + ( value.exp > 0 ? '+' : '' ) + value.exp;
+    return '' + ( (value.bas).toFixed(4) ) + 'e' + value.exp;
 }
 function expToExp(num)    //把科学计数法的数字转为正规的科学计数法
 {
